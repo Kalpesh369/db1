@@ -1,0 +1,3 @@
+create database myconl;
+use mycon1;
+create table tp(Id int, name char(20), address char(20),M_no int);

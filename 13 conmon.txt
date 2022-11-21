@@ -1,0 +1,76 @@
+import java.util.Scanner;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+ 
+public class Mongoconnect {
+	public static void main(String args[])
+	{
+		Scanner sn=new Scanner(System.in);
+		MongoClient mongo=new MongoClient("localhost",27017);
+		System.out.print("Connection Successful");
+		
+		 
+		System.out.print("\nEnter Database Name You Want To Use Or Create:");
+		String database=sn.next();
+		DB db=mongo.getDB(database);
+		
+		System.out.print("\nEnter Collection Name You Want To Use or Create :");
+		String Collection=sn.next();
+		DBCollection collection=db.createCollection(Collection,null);
+		
+		System.out.print("\nChoose What You Want To Do :");
+		System.out.print("\n1.Insert");
+		System.out.print("\n2.Delete");
+		System.out.print("\n3.Drop Database");
+		
+		System.out.print("\nChoose Any One :");
+		int ch=sn.nextInt();
+		
+		BasicDBObject info=new BasicDBObject();
+		
+		if(ch==1)
+		{
+			System.out.print("Enter ID :");
+			int id=sn.nextInt();
+			info.put("Id", id);
+			
+			System.out.print("Enter Name :");
+			String Name=sn.next();
+			info.put("Name", Name);
+			
+			System.out.print("Enter Age :");
+			int age=sn.nextInt();
+			info.put("Age",age);
+			
+			System.out.print("Enter Class :");
+			String Div=sn.next();
+			info.put("Class",Div);
+			
+			collection.insert(info);
+			
+			System.out.print("\nInserted Successfully");
+		}
+		else if(ch==2)
+		{
+			System.out.print("\nEnter Id :");
+			int id=sn.nextInt();
+			info.put("Id", id);
+			collection.remove(info);
+			System.out.print("\nData Deleted Successfully");
+			
+		}
+		else if(ch==3)
+		{
+			db.dropDatabase();
+			System.out.print("\nDatabase Dropped Successfully");
+		}
+		else
+		{
+			System.out.print("\nInvalid Choice");
+		}
+		
+	}
+}

@@ -1,0 +1,4 @@
+use jadu
+use database
+db.createCollection("tp")
+
