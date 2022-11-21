@@ -1,0 +1,34 @@
+mysql -u root –p
+create database prac44;
+use prac44;
+create table borrower (roll_no int ,name varchar(20),dateofissue date,nameofthebook varchar(30),status varchar (20));
+insert into borrower values (54,"kalpesh Pawar","2021-11-15","Think Straight" ,"Issued");
+insert into borrower values (55,"Sanjana Pawar","2022-10-18","start with why" ,"Issued");
+insert into borrower values (56,"Shivtej Pisal","2022-9-18","The Secret" ,"Returned");
+insert into borrower values (63,"Himanshu Kapse","2022-8-19","The Secret" ,"Issued");
+select * from borrower;
+create table fine(roll_no int,date date,amt int);
+delimiter $
+ create procedure calc5(in roll int)
+     begin
+     declare fine1 int;
+     declare noofdays int;
+     declare issuedate date;
+     select dateofissue into issuedate from borrower where roll_no=roll;
+     select datediff(curdate(),issuedate) into noofdays;
+     if noofdays>15 and noofdays<=30 then
+     set fine1=noofdays*5;
+     insert into fine values(roll,curdate(),fine1);
+     elseif noofdays>30 then
+     set fine1=((noofdays-30)*50)+15*5;
+     insert into fine values(roll,curdate(),fine1);
+     else
+     insert into fine values(roll,curdate(),0);
+     end if;
+     update borrower set status="return" where roll_no=roll;
+     end $
+call calc5 (63); 
+$
+select * from fine;
+
+

@@ -1,0 +1,50 @@
+mysql -u root -p
+create database prac6;
+use  database prac6;
+create table stud_marks(roll int,name char(20),totalmarks int);
+create table result(roll int,name char(20),class char(20));
+insert into stud_marks values(1,"Kalpesh",1300);
+insert into stud_marks values(2,"Sanjana",500);
+insert into stud_marks values(3,"Himanshu",1400);
+insert into stud_marks values(4,"Jayesh",100);
+insert into stud_marks values(5,"Raj",1450);
+
+
+select * from stud_marks
+
+delimiter $
+create procedure grade19(in marks int,out class char(20))
+begin
+if marks<=1500 and marks>=990 then set class="Distinction";
+end if;
+if marks<=989 and marks>=900 then set class="First_Class";
+end if;
+if marks<=899 and marks>=825 then set class="Higher_Second_Class";
+end if;
+if marks<=824 and marks>=750 then set class="Second_Class";
+end if;
+if marks<=749 and marks>=650 then set class="Passed_Class";
+end if;
+if marks<=649 then set class="Fail";
+end if;
+end $
+
+delimiter $
+create function result1(rollin int) returns int deterministic
+begin
+declare fmarks int;
+declare grade char(20);
+declare name char(20);
+select stud_marks.totalmarks,stud_marks.name into fmarks,name from stud_marks where stud_marks.roll=rollin;
+call grade19(fmarks,@grade);
+insert into result values(rollin,name,@grade);
+return rollin;
+end $
+
+select result1(1);
+$
+select*from result;
+$
+
+
+

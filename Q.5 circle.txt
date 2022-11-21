@@ -1,0 +1,15 @@
+create table AreaCircle(radius float, area float(6));
+
+delimiter $$
+create procedure CalCircleArea(in rad float)
+begin
+declare radiusBound condition for sqlstate '45000';
+if(rad>9 || rad<5)
+then
+signal sqlstate '45000' set message_text='radius is not between 5 and 9';
+else insert into AreaCircle values(rad, 3.14*rad*rad);
+end if;
+end $$
+
+call CalCircleArea(6) $$
+select * from AreaCircle $$

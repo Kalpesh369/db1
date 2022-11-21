@@ -1,0 +1,24 @@
+create table borrower(rollin int, name varchar(20), dateofissue date, nameofbook varchar(20), status varchar(10));
+create table library_audit(rollin int, name varchar(20), dateofissue date, nameofbook varchar(20), status varchar(10), ts timestamp);
+
+-- After INSERT Trigger
+delimiter $$
+create trigger after_insert after insert on borrower for each row
+begin
+insert into library_audit values(new.rollin, new.name, new.dateofissue, new.nameofbook, new.status, current_timestamp);
+end;
+$$
+
+-- After DELETE Trigger
+create trigger after_delete after delete on borrower for each row
+begin
+insert into library_audit values(old.rollin, old.name, old.dateofissue,old.nameofbook, old.status, current_timestamp());
+end;
+$$
+
+-- After UPDATE Trigger
+create trigger after_update after update on borrower for each row
+begin
+insert into library_audit values(new.rollin, new.name, new.dateofissue,new.nameofbook, new.status, current_timestamp());
+end;
+$$

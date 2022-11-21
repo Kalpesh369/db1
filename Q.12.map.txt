@@ -1,0 +1,10 @@
+use prac122
+db.createCollection("StudentMarks");
+db.StudentMarks.insertMany([{name:"sanjana",class:"te",age:19,marks:100},{name:"aditya",class:"te",age:21,marks:95},{name:"samu",class:"te",age:20,marks:97}]);
+db.StudentMarks.insertMany([{name:"kalpesh",class:"te",age:20,marks:94},{name:"soham",class:"te",age:20,marks:94},{name:"isha",class:"se",age:20,marks:91}]);
+db.StudentMarks.find();
+var map=function(){emit(this.age,this.marks)};
+var reduce=function(age,marks){return Array.sum(marks);};
+db.StudentMarks.mapReduce(map,reduce,{out:"result"});
+db.result.find();
+db.result.find().pretty();

@@ -1,0 +1,49 @@
+mysql -u root -p
+create database salesman ;
+use salesman;
+create table Salesman(salesman_id int not null primary key,name char(30) not null,city char(20) not null, commission int);
+
+create table customer(customer_id int not null unique, customer_name char(30) not null , city char(20), grade int , salesman_id int, foreign key(salesman_id) references Salesman(salesman_id));
+create table order1(order_no int not null primary key ,purchase_amt int , order_date date, customer_id int, foreign key(customer_id) references customer(customer_id), salesman_id int ,foreign key(salesman_id) references Salesman(salesman_id));
+
+insert into salesman values (5001 ,"kalpesh","Pune",10);
+insert into salesman values (5002 ,"Sanjana","Pune",20);
+insert into salesman values (5003 ,"Shivtej","Mumbai",30);
+insert into salesman values (5004 ,"Himanshu","Paris",25);
+insert into salesman values (5005 ,"Raj","Nashik",15);
+insert into salesman values (5006 ,"Ansh","Dubai",8);
+
+select * from salesman;
+
+SELECT name,commission
+FROM salesman;
+insert into customer values (3002 ,"Jayesh","New York",100,5001);
+insert into customer values (3005 ,"Ayush","Dubai",200,5005);
+insert into customer values (3004 ,"vaibhav","Pune",300,5002);
+insert into customer values (3006 ,"Shubham","Nandurbar",600,5004);
+insert into customer values (3007 ,"Meet","Pimpri",800,5003);
+insert into customer values (3008 ,"Sai","Dhule",800,5003);
+select * from customer;
+
+insert into order1 values (7001 ,"2000","2022-11-15",3002,5003);
+insert into order1 values (7002 ,"3000","2022-11-16",3005,5005);
+insert into order1 values (7003 ,"3500","2022-11-15",3004,5002);
+insert into order1 values (7004 ,"3500","2022-11-18",3006,5004);
+insert into order1 values (7005 ,"3560","2022-11-14",3007,5003);
+insert into order1 values (7006 ,"4560","2022-11-19",3008,5003);
+select * from order1;
+
+alter table salesman add mobile_no int;
+SELECT name,commission FROM salesman;
+alter table salesman modify name char(30);
+desc salesman;
+
+CREATE INDEX index1
+on salesman (salesman_id);
+desc salesman;
+show index from salesman;
+create view v1 as select name,city from salesman where city='paris';
+select * from v1;
+select city,max(grade) from customer group by city;
+select customer_id,max(purchase_amt) from order1 group by customer_id;
+ALTER TABLE customer DROP grade;
