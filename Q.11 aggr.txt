@@ -1,0 +1,17 @@
+use agrr
+switched to db agrr
+db.createCollection("Student");
+db.Student.insertMany([{name:"sanjana",class:"TE",address:"pune",age:19,fees:55000},{name:"kalpesh",class:"TE",address:"vadgaon",age:20,fees:55000},{name:"aditya",class:"TE",address:"nashik",age:20,fees:100000}]);
+db.Student.insertOne({name:"vijay",class:"SE",address:"Mumbai",age:20
+,fees:100000})
+db.Student.insertOne({name:"Sumeet",class:"SE",address:"Nagar",age:30,fees:100000})
+db.Student.find();
+db.Student.find({class:'TE'}).count()
+db.Student.aggregate([{$group:{_id:"$class",numofstud:{$sum:1},maxage:{$max:"$age"}}}]);
+db.Student.aggregate([{$match:{age:{$gt:20}}}]);
+db.Student.find().sort({age:1});
+db.Student.createIndex({name:1});
+db.Student.getIndexes()
+
+
+
