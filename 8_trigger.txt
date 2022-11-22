@@ -1,0 +1,60 @@
+mysql -u root -p
+mysql
+create database trigger2;
+use trigger2;
+create table library (book_id int primary key , book_name varchar(20),copies int ,dateofissue date ,status char(10));
+create table library_audit(book_id int,book_name varchar(20),copies int,dateofissue date,status char(10),time timestamp);
+
+insert into library values (1,"SPOS",20,"2022-11-15","issue");
+insert into library values (2,"SPM",30,"2022-11-16","issue");
+insert into library values (3,"TOC",10,"2022-11-6","Return");
+insert into library values (4,"CNS",50,"2022-11-15","Return");
+insert into library values (5,"DBMS",100,"2022-11-10","issue");
+select * from library ;
+
+delimiter $
+create trigger insert_trigger after insert on library for each row
+begin
+insert into library_audit values (new.book_id,new.book_name,new.copie
+s,new.dateofissue,new.status,current_timestamp());
+end;
+$
+insert into library values (6,"IOT",10,"2022-11-15","issue");
+$
+select * from library_audit;
+$
+select * from library;
+$
+
+create trigger update_trigger after update on library for each row
+begin
+insert into library_audit values (new.book_id,new.book_name,new.copies,new.dateofissue,new.status,current_timestamp());
+end
+$
+
+update library set book_id=7 where book_name="IOT";
+$
+select * from library_audit;
+$
+select * from library;
+$
+
+create trigger delete_trig after delete on library for each row
+begin
+insert into library_audit values (old.book_id,old.book_name,old.copies,old.dateofissue,old.status,current_timestamp());
+end
+$
+
+
+delete from library where book_id=7;
+$
+select * from library_audit;
+$
+select * from library;
+$
+
+
+
+
+
+
