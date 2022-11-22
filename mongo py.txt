@@ -51,3 +51,5 @@ print()
 mycol.delete_one({'name':'Jeevan'})
 print("Deleted the record :Jeevan")
 print()
+pip3 install pymongo
+
